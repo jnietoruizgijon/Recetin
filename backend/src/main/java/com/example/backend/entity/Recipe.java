@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class Recipe {
 
     private LocalDateTime updatedAt;
 
+    @JsonIgnore // Para que no muestre el objeto owner entero
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
@@ -48,5 +50,9 @@ public class Recipe {
     @PreUpdate
     void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public Long getOwnerId() { // Este metodo se hace para que en el Json aparezca directamente el ownerId, no el owner entero
+        return owner != null ? owner.getId() : null;
     }
 }
