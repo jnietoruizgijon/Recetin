@@ -1,0 +1,10 @@
+:root {
+    --primary: #E8C697;
+    --primary-rgb: 232, 198, 151;
+    --secondary: #F8B759;
+    --secondary-rgb: 248, 183, 89;
+    --details: #331704;
+    --details-rgb: 51, 23, 4;
+    --primary-color: var(--primary);
+    --primary-color-dark: var(--secondary);
+}

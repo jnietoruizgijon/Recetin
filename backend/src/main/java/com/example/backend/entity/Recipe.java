@@ -34,6 +34,11 @@ public class Recipe {
 
     private String imageUrl;
 
+    private Integer preparationTime;
+
+    @Column(columnDefinition = "TEXT")
+    private String ingredients;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -43,6 +48,7 @@ public class Recipe {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE)
     private List<Favorite> favorites = new ArrayList<>();
 

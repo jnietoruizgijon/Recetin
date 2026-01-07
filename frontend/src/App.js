@@ -1,28 +1,31 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Router, Route } from "react-router-dom";
+
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RecipeDetail from "./pages/RecipeDetail";
+import Profile from "./pages/Profile";
+import CreateRecipe from "./pages/CreateRecipe";
+import EditRecipe from "./pages/EditeRecipe";
 
 function App() {
-  const [recipes, setRecipes] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/recipes")
-      .then((res) => res.json())
-      .then((data) => setRecipes(data))
-      .catch((err) => console.error(err));
-  }, []);
-
   return (
-    <div>
-      <h1>Recetín</h1>
+    <BrowserRouter>
+      <Header />
 
-      <ul>
-        {recipes.map((recipe) => (
-          <li key={recipe.id}>
-            {recipe.title}
-          </li>
-        ))}
-      </ul>
-    </div>
+      <Routes>
+        <Route path="/" element={<Home />}/>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/register" element={<Register />}/>
+        <Route path="/recipes/:id" element={<RecipeDetail />}/>
+        <Route path="/profile" element={<Profile />}/>
+        <Route path="/recipes/new" element={<CreateRecipe />}/>
+        <Route path="/recipes/edit/:id" element={<EditRecipe />}/>
+      </Routes>
+    </BrowserRouter>
   );
+
 }
 
 export default App;

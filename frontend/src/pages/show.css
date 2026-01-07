@@ -1,0 +1,103 @@
+@import url(../styles/index.css);
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.favorite-btn {
+    font-size: 2rem;
+    color: #ccc;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+.favorite-btn.is-favorite {
+    color: #ff4444;
+}
+
+.recipe {
+    background-color: var(--details);
+    padding: 2rem;
+    border-radius: 20px;
+    color: white;
+    width: 90%;
+    max-width: 1200px;
+    margin-block: 1rem;
+}
+
+.recipe h1,
+.recipe h3 {
+    margin-block: 1rem;
+}
+
+.recipe .recipe__section-title {
+    text-decoration: underline;
+}
+
+.recipe ul,
+.recipe ol {
+    margin-left: 1rem;
+}
+
+.recipe-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.recipe-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.download-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: var(--primary-color-dark);
+}
+
+img {
+    width: 100%;
+}
+
+.recipe-title {
+    margin: 0;
+    padding: 0;
+}

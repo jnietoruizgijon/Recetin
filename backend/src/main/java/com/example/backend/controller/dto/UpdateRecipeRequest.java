@@ -11,4 +11,7 @@ public class UpdateRecipeRequest {
     private String description;
     private String steps;
     private boolean publicRecipe;
+    private String ingredients;
+    private String imageUrl;
+    private Integer preparationTime;
 }

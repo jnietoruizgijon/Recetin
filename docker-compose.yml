@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: recetin_postgres
+    environment:
+      POSTGRES_DB: recetin_db
+      POSTGRES_USER: recetin_user
+      POSTGRES_PASSWORD: recetin_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: recetin-backend
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/recetin_db
+      SPRING_DATASOURCE_USERNAME: recetin_user
+      SPRING_DATASOURCE_PASSWORD: recetin_pass
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: recetin-frontend
+    depends_on:
+      - backend
+    environment:
+      REACT_APP_API_URL: http://backend:8080
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:
+

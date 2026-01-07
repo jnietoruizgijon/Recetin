@@ -1,0 +1,145 @@
+@import url(../styles/index.css);
+
+.header {
+    justify-content: center;
+}
+
+.header .container {
+    width: fit-content;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main {
+    /* padding-top: 150px; */
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+}
+
+.recipe-form {
+    background-color: var(--details);
+    padding: 2rem;
+    border-radius: 15px;
+    color: white;
+    max-width: 800px;
+    width: 100%;
+}
+
+.recipe-form form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.recipe-form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary);
+    font-size: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 15px;
+    border: none;
+    margin-block: 0.5rem;
+    font-size: 1rem;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(var(--secondary-rgb), 0.2);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+.ingredients-group,
+.steps-group {
+    margin-bottom: 1.5rem;
+}
+
+.ingredients-group h3,
+.steps-group h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+button,
+.add-btn,
+.remove-btn {
+    padding: 0.5rem;
+    border-radius: 15px;
+    background-color: var(--primary);
+    color: var(--details);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-block: 0.5rem;
+}
+
+button:hover,
+.add-btn:hover,
+.remove-btn:hover {
+    background-color: var(--secondary);
+    transform: scale(1);
+}
+
+.remove-btn {
+    background-color: #dc3545;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+button {
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    padding: 0.75rem;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+    margin-block: 0.5rem;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.form-group small {
+    display: block;
+    color: var(--primary);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+}

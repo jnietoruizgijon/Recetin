@@ -11,5 +11,8 @@ public class CreateRecipeRequest {
     private String description;
     private String steps;
     private boolean publicRecipe;
+    private String ingredients;
+    private String imageUrl;
+    private Integer preparationTime;
     private Long ownerId;
 }

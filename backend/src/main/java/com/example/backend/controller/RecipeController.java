@@ -7,11 +7,14 @@ import com.example.backend.entity.User;
 import com.example.backend.repository.FavoriteRepository;
 import com.example.backend.repository.RecipeRepository;
 import com.example.backend.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/recipes")
 public class RecipeController {
 
     private final RecipeRepository recipeRepository;
@@ -24,12 +27,25 @@ public class RecipeController {
         this.favoriteRepository = favoriteRepository;
     }
 
-    @GetMapping("/recipes")
-    public List<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
+    @GetMapping
+    public List<Recipe> getPublicRecipes() {
+        return recipeRepository.findByPublicRecipeTrue();
     }
 
-    @PostMapping("/recipes")
+    @GetMapping("/{id}")
+    public Recipe getRecipe(@PathVariable Long id) {
+        return recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Recipe> getRecipesByUser(@PathVariable Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return recipeRepository.findByOwner(user);
+    }
+
+    @PostMapping
     public Recipe createRecipe(@RequestBody CreateRecipeRequest request) {
         User owner = userRepository.findById(request.getOwnerId()).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -38,12 +54,15 @@ public class RecipeController {
         recipe.setDescription(request.getDescription());
         recipe.setSteps(request.getSteps());
         recipe.setPublicRecipe(request.isPublicRecipe());
+        recipe.setIngredients(request.getIngredients());
+        recipe.setPreparationTime(request.getPreparationTime());
+        recipe.setImageUrl(request.getImageUrl());
         recipe.setOwner(owner);
 
         return recipeRepository.save(recipe);
     }
 
-    @PutMapping("/recipes/{id}")
+    @PutMapping("/{id}")
     public Recipe updateRecipe (@PathVariable Long id, @RequestBody UpdateRecipeRequest request) {
 
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
@@ -52,15 +71,20 @@ public class RecipeController {
         recipe.setDescription(request.getDescription());
         recipe.setSteps(request.getSteps());
         recipe.setPublicRecipe(request.isPublicRecipe());
+        recipe.setIngredients(request.getIngredients());
+        recipe.setPreparationTime(request.getPreparationTime());
+        recipe.setImageUrl(request.getImageUrl());
 
         return recipeRepository.save(recipe);
     }
 
-    @DeleteMapping("/recipes/{id}")
-    public void deleteRecipe(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public void deleteRecipe(@PathVariable Long id, @RequestParam Long userId) {
 
-        if (!recipeRepository.existsById(id)) {
-            throw new RuntimeException("Recipe not found");
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
+
+        if (!recipe.getOwner().getId().equals(userId)) {
+            throw new RuntimeException("You are not the owner");
         }
 
         recipeRepository.deleteById(id);
