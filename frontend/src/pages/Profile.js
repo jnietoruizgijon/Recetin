@@ -12,6 +12,7 @@ function Profile() {
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const API_URL = process.env.REACT_APP_API_URL;
 
     const navigate = useNavigate();
 
@@ -25,8 +26,8 @@ function Profile() {
         try {
             setLoading(true);
 
-            const recipesResponse = await fetch(`http://localhost:8080/recipes/user/${user.id}`);
-            const favoritesResponse = await fetch(`http://localhost:8080/favorites/${user.id}`);
+            const recipesResponse = await fetch(`API_URL/recipes/user/${user.id}`);
+            const favoritesResponse = await fetch(`API_URL/favorites/${user.id}`);
 
             if (!recipesResponse.ok) throw new Error('Error al cargar mis recetas');
             if (!favoritesResponse.ok) throw new Error('Error al cargar favoritos');
@@ -47,7 +48,7 @@ function Profile() {
     const handleRemoveFavorite = async (recipeId) => {
         try {
             const response = await fetch(
-                `http://localhost:8080/favorites/${user.id}/${recipeId}`,
+                `API_URL/favorites/${user.id}/${recipeId}`,
                 { method: 'DELETE' }
             );
 
@@ -58,30 +59,6 @@ function Profile() {
             console.error('Error al eliminar favorito:', err);
         }
     };
-
-    const handleDeleteRecipe = async (recipeId) => {
-        if (!window.confirm('¿Estás seguro?')) return;
-
-        try {
-            const response = await fetch(
-                `http://localhost:8080/recipes/${recipeId}`,
-                { method: 'DELETE' }
-            );
-
-            if (response.status === 403) {
-                alert('No tienes permiso para eliminar esta receta');
-                return;
-            }
-
-            if (response.ok) {
-                setMyRecipes(prev => prev.filter(r => r.id !== recipeId));
-            }
-        } catch (err) {
-            console.error('Error:', err);
-            alert('Error al eliminar');
-        }
-    };
-
 
     if (!user) {
         return (

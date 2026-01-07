@@ -12,10 +12,12 @@ function RecipeDetail() {
     const [isFavorite, setIsFavorite] = useState(false);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
+    const API_URL = process.env.REACT_APP_API_URL;
+
 
 
     useEffect(() => {
-        fetch(`http://localhost:8080/recipes/${id}`)
+        fetch(`API_URL/recipes/${id}`)
             .then(res => res.json())
             .then(data => setRecipe(data));
     }, [id]);
@@ -23,7 +25,7 @@ function RecipeDetail() {
     useEffect(() => {
         if (!user) return;
 
-        fetch(`http://localhost:8080/favorites/${user.id}`)
+        fetch(`API_URL/favorites/${user.id}`)
             .then(res => res.json())
             .then(favs => {
                 const found = favs.some(f => f.id === Number(id));
@@ -36,7 +38,7 @@ function RecipeDetail() {
 
         if (!isFavorite) {
             // añadir
-            await fetch(`http://localhost:8080/favorites/${user.id}/${id}`, {
+            await fetch(`API_URL/favorites/${user.id}/${id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -48,7 +50,7 @@ function RecipeDetail() {
             setIsFavorite(true);
         } else {
             // quitar
-            await fetch(`http://localhost:8080/favorites/${user.id}/${id}`, {
+            await fetch(`API_URL/favorites/${user.id}/${id}`, {
                 method: "DELETE"
             });
             setIsFavorite(false);
@@ -62,7 +64,7 @@ function RecipeDetail() {
 
         if (!confirmDelete) return;
 
-        await fetch(`http://localhost:8080/recipes/${recipe.id}`, {
+        await fetch(`API_URL/recipes/${recipe.id}`, {
             method: "DELETE"
         });
 

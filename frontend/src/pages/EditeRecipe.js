@@ -10,6 +10,7 @@ function EditRecipe() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchRecipe();
@@ -17,7 +18,7 @@ function EditRecipe() {
 
   const fetchRecipe = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/recipes/${id}`);
+      const response = await fetch(`${API_URL}/recipes/${id}`);
       if (!response.ok) throw new Error('Receta no encontrada');
       const data = await response.json();
       setRecipe(data);

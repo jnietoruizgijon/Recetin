@@ -10,7 +10,7 @@ function Home() {
   const { user } = useContext(AuthContext);
   const [sortBy, setSortBy] = useState('none');
   const [search, setSearch] = useState('');
-
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchRecipes();
@@ -42,7 +42,7 @@ function Home() {
 
   const fetchRecipes = async () => {
     try {
-      const response = await fetch('http://localhost:8080/recipes');
+      const response = await fetch(`${API_URL}/recipes`);
       if (!response.ok) throw new Error('Error al cargar recetas');
       const data = await response.json();
       setRecipes(data);

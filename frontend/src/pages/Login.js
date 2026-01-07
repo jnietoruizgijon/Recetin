@@ -7,6 +7,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const { login } = useContext(AuthContext);
 
@@ -17,7 +18,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8080/users/login", {
+      const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

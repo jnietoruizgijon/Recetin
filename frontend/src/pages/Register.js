@@ -7,6 +7,8 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const API_URL = process.env.REACT_APP_API_URL;
+
 
     const navigate = useNavigate();
 
@@ -15,7 +17,7 @@ function Register() {
         setError("");
 
         try {
-            const response = await fetch("http://localhost:8080/users", {
+            const response = await fetch("API_URL/users", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import "../pages/create-recipe.css"
 
 function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
+  const API_URL = process.env.REACT_APP_API_URL;
+
 
   const [formData, setFormData] = useState({
     title: '',
@@ -55,11 +57,11 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
         ownerId: user.id
       };
 
-      let url = 'http://localhost:8080/recipes';
+      let url = 'API_URL/recipes';
       let method = 'POST';
 
       if (recipeId) {
-        url = `http://localhost:8080/recipes/${recipeId}`;
+        url = `API_URL/recipes/${recipeId}`;
         method = 'PUT';
       }
 
