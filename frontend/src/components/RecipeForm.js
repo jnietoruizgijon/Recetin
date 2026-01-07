@@ -57,11 +57,11 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
         ownerId: user.id
       };
 
-      let url = 'API_URL/recipes';
+      let url = `${API_URL}/recipes`;
       let method = 'POST';
 
       if (recipeId) {
-        url = `API_URL/recipes/${recipeId}`;
+        url = `${API_URL}/recipes/${recipeId}`;
         method = 'PUT';
       }
 

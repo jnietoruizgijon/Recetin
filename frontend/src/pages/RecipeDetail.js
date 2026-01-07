@@ -17,7 +17,7 @@ function RecipeDetail() {
 
 
     useEffect(() => {
-        fetch(`API_URL/recipes/${id}`)
+        fetch(`${API_URL}/recipes/${id}`)
             .then(res => res.json())
             .then(data => setRecipe(data));
     }, [id]);
@@ -25,7 +25,7 @@ function RecipeDetail() {
     useEffect(() => {
         if (!user) return;
 
-        fetch(`API_URL/favorites/${user.id}`)
+        fetch(`${API_URL}/favorites/${user.id}`)
             .then(res => res.json())
             .then(favs => {
                 const found = favs.some(f => f.id === Number(id));
@@ -38,7 +38,7 @@ function RecipeDetail() {
 
         if (!isFavorite) {
             // añadir
-            await fetch(`API_URL/favorites/${user.id}/${id}`, {
+            await fetch(`${API_URL}/favorites/${user.id}/${id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -50,7 +50,7 @@ function RecipeDetail() {
             setIsFavorite(true);
         } else {
             // quitar
-            await fetch(`API_URL/favorites/${user.id}/${id}`, {
+            await fetch(`${API_URL}/favorites/${user.id}/${id}`, {
                 method: "DELETE"
             });
             setIsFavorite(false);
@@ -64,7 +64,7 @@ function RecipeDetail() {
 
         if (!confirmDelete) return;
 
-        await fetch(`API_URL/recipes/${recipe.id}`, {
+        await fetch(`${API_URL}/recipes/${recipe.id}`, {
             method: "DELETE"
         });
 
