@@ -55,11 +55,11 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
         ownerId: user.id
       };
 
-      let url = 'http://localhost:8080/recipes';
+      let url = `${process.env.REACT_APP_API_URL}/recipes`;
       let method = 'POST';
 
       if (recipeId) {
-        url = `http://localhost:8080/recipes/${recipeId}`;
+        url = `${process.env.REACT_APP_API_URL}/recipes/${recipeId}`;
         method = 'PUT';
       }
 

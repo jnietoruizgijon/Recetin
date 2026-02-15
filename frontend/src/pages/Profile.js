@@ -25,8 +25,8 @@ function Profile() {
         try {
             setLoading(true);
 
-            const recipesResponse = await fetch(`http://localhost:8080/recipes/user/${user.id}`);
-            const favoritesResponse = await fetch(`http://localhost:8080/favorites/${user.id}`);
+            const recipesResponse = await fetch(`${process.env.REACT_APP_API_URL}/recipes/user/${user.id}`);
+            const favoritesResponse = await fetch(`${process.env.REACT_APP_API_URL}/favorites/${user.id}`);
 
             if (!recipesResponse.ok) throw new Error('Error al cargar mis recetas');
             if (!favoritesResponse.ok) throw new Error('Error al cargar favoritos');
@@ -47,7 +47,7 @@ function Profile() {
     const handleRemoveFavorite = async (recipeId) => {
         try {
             const response = await fetch(
-                `http://localhost:8080/favorites/${user.id}/${recipeId}`,
+                `${process.env.REACT_APP_API_URL}/favorites/${user.id}/${recipeId}`,
                 { method: 'DELETE' }
             );
 
@@ -64,7 +64,7 @@ function Profile() {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/recipes/${recipeId}`,
+                `${process.env.REACT_APP_API_URL}/recipes/${recipeId}`,
                 { method: 'DELETE' }
             );
 
