@@ -28,10 +28,8 @@ services:
     container_name: recetin-frontend
     depends_on:
       - backend
-    environment:
-      REACT_APP_API_URL: http://backend:8080
     ports:
-      - "3000:80"
+      - "3000:3000"
 
 volumes:
   postgres_data:
