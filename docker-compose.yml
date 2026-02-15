@@ -31,8 +31,6 @@ services:
     container_name: recetin-frontend
     depends_on:
       - backend
-    env_file:
-      - ./frontend/.env
     ports:
       - "3000:80"
 
