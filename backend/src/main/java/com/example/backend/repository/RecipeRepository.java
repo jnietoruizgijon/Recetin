@@ -9,5 +9,5 @@ import java.util.List;
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findByOwner(User owner);
 
-    List<Recipe> findByPublicRecipeTrue();
+    List<Recipe> findByPublicRecipeTrueOrderByIdAsc();
 }

@@ -20,6 +20,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/recetin_db
       SPRING_DATASOURCE_USERNAME: recetin_user
       SPRING_DATASOURCE_PASSWORD: recetin_pass
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
     ports:
       - "8080:8080"
 
