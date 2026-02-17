@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import "./user.css"
 import plus from "../img/plus-solid-full.svg"
 
 
@@ -101,65 +100,101 @@ function Profile() {
     }
 
     return (
-        <main className='main'>
-            <h1>Perfil de {user.username}</h1>
-
-            {/* Sección 1: Mis Recetas */}
-            <div className='user-recipes'>
-                <section className='recipes-section'>
-                    <h2>Mis Recetas Creadas</h2>
-                    <div className='recipes-grid'>
-                        <Link to="/recipes/new" className='card create-card'>
-                            <div className='create-card__content'>
-                                <img src={plus} />
-                                <p>Añadir receta</p>
-                            </div>
-                        </Link>
-                        {myRecipes.length === 0 ? (
-                            <p>No has creado ninguna receta aún.</p>
-                        ) : (
-                            <>
-                                {myRecipes.map(recipe => (
-                                    <Link key={recipe.id} to={`/recipes/${recipe.id}`} className='card recipe-card'>
-                                        {recipe.imageUrl && (
-                                            <img
-                                                src={recipe.imageUrl}
-                                                alt={recipe.title}
-                                            />
-                                        )}
-                                        <div>
-                                            <h3>{recipe.title}</h3>
-                                            <p>{recipe.description}</p>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </>
-                        )}
-                    </div>
-                </section>
+        <main className="container py-5">
+            {/* CABECERA DE PERFIL (Estilo similar al que hicimos antes) */}
+            <div className="text-center mb-5">
+                <div className="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow"
+                    style={{ width: '80px', height: '80px', fontSize: '2rem' }}>
+                    {user.username.charAt(0).toUpperCase()}
+                </div>
+                <h1 className="fw-bold">Perfil de {user.username}</h1>
+                <p className="text-muted">Gestiona tus recetas y tus platos favoritos</p>
             </div>
 
-            {/* Sección 2: Mis Favoritos */}
-            <div>
-                <h2>Mis Recetas Favoritas</h2>
-                {favorites.length === 0 ? (
-                    <p>No tienes recetas favoritas aún.</p>
-                ) : (
-                    <div>
-                        {favorites.map(recipe => (
-                            <div key={recipe.id}>
-                                <h3>{recipe.title}</h3>
-                                <p>{recipe.description}</p>
-                                <div>
-                                    <Link to={`/recipes/${recipe.id}`}>Ver receta</Link>
-                                    <button onClick={() => handleRemoveFavorite(recipe.id)}>
-                                        Quitar de favoritos
-                                    </button>
+            {/* NAVEGACIÓN POR PESTAÑAS (Nav Tabs) */}
+            <ul className="nav nav-pills justify-content-center mb-5 gap-2" id="profileTabs" role="tablist">
+                <li className="nav-item">
+                    <button className="nav-link active rounded-pill px-4" id="recipes-tab" data-bs-toggle="pill" data-bs-target="#recipes" type="button">
+                        👨‍🍳 Mis Recetas
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button className="nav-link rounded-pill px-4" id="favs-tab" data-bs-toggle="pill" data-bs-target="#favs" type="button">
+                        ❤️ Favoritos
+                    </button>
+                </li>
+            </ul>
+
+            <div className="tab-content" id="profileTabsContent">
+
+                {/* SECCIÓN 1: MIS RECETAS */}
+                <div className="tab-pane fade show active" id="recipes" role="tabpanel">
+                    <div className="row g-4">
+                        {/* Botón Añadir */}
+                        <div className="col-12 col-md-4 col-lg-3">
+                            <Link to="/recipes/new" className="card h-100 border-dashed d-flex align-items-center justify-content-center text-decoration-none bg-light"
+                                style={{ border: '2px dashed #dee2e6', minHeight: '200px' }}>
+                                <div className="text-center">
+                                    <img src={plus} alt="Añadir" width="40" className="mb-2" />
+                                    <p className="fw-bold text-primary mb-0">Nueva Receta</p>
                                 </div>
+                            </Link>
+                        </div>
+
+                        {myRecipes.length === 0 ? (
+                            <div className="col-12 col-md-8 d-flex align-items-center">
+                                <p className="text-muted mb-0">No has creado ninguna receta aún.</p>
                             </div>
-                        ))}
+                        ) : (
+                            myRecipes.map(recipe => (
+                                <div className="col-12 col-md-4 col-lg-3" key={recipe.id}>
+                                    <div className="card h-100 shadow-sm border-0">
+                                        {recipe.imageUrl && <img src={recipe.imageUrl} className="card-img-top" alt={recipe.title} style={{ height: '150px', objectFit: 'cover' }} />}
+                                        <div className="card-body">
+                                            <h5 className="card-title fw-bold text-truncate">{recipe.title}</h5>
+                                            <Link to={`/recipes/${recipe.id}`} className="btn btn-outline-primary btn-sm w-100 rounded-pill">Gestionar</Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
-                )}
+                </div>
+
+                {/* SECCIÓN 2: MIS FAVORITOS */}
+                <div className="tab-pane fade" id="favs" role="tabpanel">
+                    {favorites.length === 0 ? (
+                        <div className="text-center py-5">
+                            <p className="text-muted fs-5">Aún no tienes recetas favoritas. ¡Explora y dales a ❤️!</p>
+                        </div>
+                    ) : (
+                        <div className="row g-4">
+                            {favorites.map(recipe => (
+                                <div className="col-12 col-md-6 col-lg-4" key={recipe.id}>
+                                    <div className="card shadow-sm h-100">
+                                        <div className="card-body d-flex gap-3">
+                                            {recipe.imageUrl && (
+                                                <img src={recipe.imageUrl} alt={recipe.title} className="rounded" style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
+                                            )}
+                                            <div className="flex-grow-1">
+                                                <h5 className="fw-bold mb-1 text-truncate" style={{ maxWidth: '150px' }}>{recipe.title}</h5>
+                                                <div className="d-flex gap-2">
+                                                    <Link to={`/recipes/${recipe.id}`} className="btn btn-link btn-sm p-0 text-decoration-none">Ver</Link>
+                                                    <button
+                                                        onClick={() => handleRemoveFavorite(recipe.id)}
+                                                        className="btn btn-link btn-sm p-0 text-danger text-decoration-none"
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </main>
     );

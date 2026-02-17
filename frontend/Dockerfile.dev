@@ -1,0 +1,22 @@
+# Usamos una imagen de Node (no de Nginx)
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copiamos solo los archivos de dependencias primero
+COPY package.json package-lock.json ./
+
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
+# Instalamos las dependencias
+RUN npm install
+
+# Copiamos el resto del código (aunque el volumen lo sobrescribirá, esto es buena práctica)
+COPY . .
+
+# Exponemos el puerto de desarrollo
+EXPOSE 3000
+
+# Arrancamos en modo desarrollo
+CMD ["npm", "start"]

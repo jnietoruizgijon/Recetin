@@ -8,6 +8,9 @@ import RecipeDetail from "./pages/RecipeDetail";
 import Profile from "./pages/Profile";
 import CreateRecipe from "./pages/CreateRecipe";
 import EditRecipe from "./pages/EditeRecipe";
+import UserDetail from "./pages/UserDetai";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 function App() {
   return (
@@ -22,6 +25,7 @@ function App() {
         <Route path="/profile" element={<Profile />}/>
         <Route path="/recipes/new" element={<CreateRecipe />}/>
         <Route path="/recipes/edit/:id" element={<EditRecipe />}/>
+        <Route path="/user/:id" element={<UserDetail />}/>
       </Routes>
     </BrowserRouter>
   );

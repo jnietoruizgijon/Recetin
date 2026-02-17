@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import "./register.css"
+import { Link } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,10 +22,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          email,
-          password
-        })
+        body: JSON.stringify({ email, password })
       });
 
       if (!response.ok) {
@@ -34,10 +31,12 @@ function Login() {
 
       const user = await response.json();
 
-      // Guardamos la "sesión" en el navegador
-      login(user);
+      // --- CAMBIO AQUÍ ---
+      // Guardamos el objeto usuario como un texto en el almacenamiento del navegador
+      localStorage.setItem("user", JSON.stringify(user));
+      // -------------------
 
-      // Redirigimos a Home
+      login(user);
       navigate("/");
 
     } catch (err) {
@@ -46,34 +45,84 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="container" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
+      <div className="row justify-content-center w-100">
+        <div className="col-12 col-md-6 col-lg-4">
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label><br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          {/* TARJETA DE LOGIN */}
+          <div className="card shadow-lg border-0 rounded-4">
+            <div className="card-body p-5">
+
+              {/* ICONO Y TÍTULO */}
+              <div className="text-center mb-4">
+                <div className="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                  style={{ width: '80px', height: '80px' }}>
+                  <span style={{ fontSize: '2rem' }}>👤</span>
+                </div>
+                <h2 className="fw-bold">Bienvenido</h2>
+                <p className="text-muted small">Introduce tus credenciales para entrar</p>
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                {/* EMAIL */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">Correo Electrónico</label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light border-end-0">📧</span>
+                    <input
+                      type="email"
+                      className="form-control bg-light border-start-0"
+                      placeholder="nombre@ejemplo.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* PASSWORD */}
+                <div className="mb-4">
+                  <label className="form-label fw-semibold">Contraseña</label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light border-end-0">🔒</span>
+                    <input
+                      type="password"
+                      className="form-control bg-light border-start-0"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* BOTÓN DE ENTRAR */}
+                <div className="d-grid">
+                  <button type="submit" className="btn btn-primary btn-lg rounded-pill shadow-sm fw-bold">
+                    Entrar
+                  </button>
+                </div>
+              </form>
+
+              {/* MENSAJE DE ERROR */}
+              {error && (
+                <div className="alert alert-danger mt-4 py-2 small border-0 text-center" role="alert">
+                  ⚠️ {error}
+                </div>
+              )}
+
+              {/* LINK DE REGISTRO */}
+              <div className="text-center mt-4">
+                <p className="small text-muted mb-0">
+                  ¿No tienes cuenta? <Link to="/register" className="text-primary fw-bold text-decoration-none">Regístrate</Link>
+                </p>
+              </div>
+
+            </div>
+          </div>
+
         </div>
-
-        <div>
-          <label>Contraseña</label><br />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit">Entrar</button>
-      </form>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
   );
 }

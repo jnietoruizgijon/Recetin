@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import "../pages/create-recipe.css"
 
 function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
 
@@ -104,7 +103,7 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
       }
 
       const data = await response.json();
-      
+
       if (onSuccess) onSuccess(data.id);
 
     } catch (err) {
@@ -116,67 +115,172 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
   };
 
   return (
-    <main>
-      <section className='recipe-form'>
-        <h1>{recipeId ? 'Editar Receta' : 'Crear Nueva Receta'}</h1>
-        
-        {error && <div className="error-alert">{error}</div>}
+    <main className="container mt-5 mb-5">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
 
-        <form onSubmit={handleSubmit}>
-          <div className='form-group'>
-            <label>Título:</label>
-            <input type="text" name="title" value={formData.title} onChange={handleChange} required />
-          </div>
+          {/* TARJETA SOMBREADA */}
+          <div className="card shadow">
+            <div className="card-body p-4">
 
-          <div className='form-group'>
-            <label>Descripción:</label>
-            <textarea name="description" value={formData.description} onChange={handleChange} required />
-          </div>
+              <h2 className="card-title text-center mb-4">
+                {recipeId ? '✏️ Editar Receta' : '🍳 Crear Nueva Receta'}
+              </h2>
 
-          <div className='form-group'>
-            <label>Foto de la receta:</label>
-            <input 
-              type="file" 
-              accept="image/*" 
-              onChange={handleFileChange} 
-            />
-            {previewUrl && (
-              <div style={{marginTop: '10px'}}>
-                <img src={previewUrl} alt="Vista previa" style={{maxWidth: '100%', maxHeight: '200px', borderRadius: '8px'}} />
-              </div>
-            )}
-          </div>
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
 
-          <div className='form-group'>
-            <label>Ingredientes (uno por línea):</label>
-            <textarea name="ingredients" value={formData.ingredients} onChange={handleChange} rows="5" required />
-          </div>
+              <form onSubmit={handleSubmit}>
 
-          <div className='steps-group'>
-            <label>Pasos:</label>
-            <textarea name="steps" value={formData.steps} onChange={handleChange} rows="6" required />
-          </div>
+                {/* TÍTULO */}
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Título de la receta</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    placeholder="Ej: Tortilla de patatas"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <div className='form-group'>
-            <label>Tiempo (minutos):</label>
-            <input type="number" name="preparationTime" value={formData.preparationTime} onChange={handleChange} min="1" />
-          </div>
+                {/* DESCRIPCIÓN */}
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Descripción corta</label>
+                  <textarea
+                    className="form-control"
+                    name="description"
+                    rows="3"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <div className='form-group'>
-             <label>
-              <input type="checkbox" name="publicRecipe" checked={formData.publicRecipe} onChange={handleChange} />
-              Receta pública
-            </label>
-          </div>
+                {/* FOTO */}
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Foto del plato</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                  {previewUrl && (
+                    <div className="mt-3 text-center">
+                      <img
+                        src={previewUrl}
+                        alt="Vista previa"
+                        className="img-thumbnail rounded"
+                        style={{ maxHeight: '250px', objectFit: 'cover' }}
+                      />
+                    </div>
+                  )}
+                </div>
 
-          <div className="actions">
-            <button type="submit" disabled={loading}>
-              {loading ? 'Subiendo...' : 'Guardar Receta'}
-            </button>
-            <button type="button" onClick={onCancel}>Cancelar</button>
+                {/* INGREDIENTES */}
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Ingredientes <small className="text-muted fw-normal">(uno por línea)</small></label>
+                  <textarea
+                    className="form-control"
+                    name="ingredients"
+                    value={formData.ingredients}
+                    onChange={handleChange}
+                    rows="5"
+                    placeholder="Ej:&#10;4 Huevos&#10;1kg Patatas&#10;Sal"
+                    required
+                  />
+                </div>
+
+                {/* PASOS */}
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Pasos de preparación</label>
+                  <textarea
+                    className="form-control"
+                    name="steps"
+                    value={formData.steps}
+                    onChange={handleChange}
+                    rows="6"
+                    required
+                  />
+                </div>
+
+                {/* GRUPO: TIEMPO Y CHECKBOX (En la misma fila) */}
+                <div className="row mb-4 align-items-center">
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Tiempo (minutos)</label>
+                    <div className="input-group">
+                      <span className="input-group-text">⏱</span>
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="preparationTime"
+                        value={formData.preparationTime}
+                        onChange={handleChange}
+                        min="1"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-6 mt-3 mt-md-0">
+                    <div
+                      className="form-check form-switch p-3 border rounded bg-light d-flex align-items-center justify-content-center"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleChange({ target: { name: 'publicRecipe', type: 'checkbox', checked: !formData.publicRecipe } })}
+                    >
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="publicCheck"
+                        name="publicRecipe"
+                        checked={formData.publicRecipe}
+                        onChange={handleChange}
+                        // Estos estilos resetean el posicionamiento extraño de Bootstrap
+                        style={{
+                          cursor: 'pointer',
+                          float: 'none',
+                          margin: '0',
+                          position: 'static'
+                        }}
+                      />
+                      <label
+                        className="form-check-label ms-3 fw-medium mb-0"
+                        htmlFor="publicCheck"
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Hacer pública la receta
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* BOTONES DE ACCIÓN */}
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end border-top pt-3">
+                  <button type="button" className="btn btn-outline-secondary me-md-2" onClick={onCancel}>
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn btn-primary px-4" disabled={loading}>
+                    {loading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Subiendo...
+                      </>
+                    ) : (
+                      'Guardar Receta'
+                    )}
+                  </button>
+                </div>
+
+              </form>
+            </div>
           </div>
-        </form>
-      </section>
+        </div>
+      </div>
     </main>
   );
 }

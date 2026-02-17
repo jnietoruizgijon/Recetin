@@ -3,14 +3,17 @@ package com.example.backend.service;
 import com.example.backend.controller.dto.CreateRecipeRequest;
 import com.example.backend.controller.dto.UpdateRecipeRequest;
 import com.example.backend.entity.Recipe;
+import com.example.backend.entity.Subscription;
 import com.example.backend.entity.User;
 import com.example.backend.repository.RecipeRepository;
+import com.example.backend.repository.SubscriptionRepository;
 import com.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,7 +26,13 @@ public class RecipeService {
     private UserRepository userRepository;
 
     @Autowired
-    private CloudinaryService cloudinaryService; // Tu servicio de fotos
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     // Lógica para CREAR
     public Recipe createRecipeWithImage(CreateRecipeRequest request, MultipartFile file) throws IOException {
@@ -31,14 +40,23 @@ public class RecipeService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Recipe recipe = new Recipe();
-        // Mapeamos los campos
+
         mapRequestToRecipe(recipe, request);
         recipe.setOwner(owner);
 
-        // Si hay foto, la subimos
         if (file != null && !file.isEmpty()) {
             Map result = cloudinaryService.upload(file);
             recipe.setImageUrl((String) result.get("secure_url"));
+        }
+
+        List<Subscription> subscribers = subscriptionRepository.findByFollowed(recipe.getOwner());
+
+        for (Subscription sub : subscribers) {
+            emailService.sendNotification(
+                    sub.getFollower().getEmail(),
+                    "¡Nueva receta de " + recipe.getOwner().getUsername() + "!",
+                    "El chef ha subido: " + recipe.getTitle() + ". ¡Entra a verla!"
+            );
         }
 
         return recipeRepository.save(recipe);

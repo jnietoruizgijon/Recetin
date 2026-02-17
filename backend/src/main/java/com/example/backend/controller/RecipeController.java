@@ -76,13 +76,9 @@ public class RecipeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRecipe(@PathVariable Long id, @RequestParam Long userId) {
+    public void deleteRecipe(@PathVariable Long id) {
 
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
-
-        if (!recipe.getOwner().getId().equals(userId)) {
-            throw new RuntimeException("You are not the owner");
-        }
 
         recipeRepository.deleteById(id);
     }
