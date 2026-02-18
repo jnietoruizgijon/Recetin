@@ -97,7 +97,6 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
         method: method,
         body: dataToSend,
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         }
       });
