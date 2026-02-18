@@ -49,13 +49,16 @@ public class RecipeService {
             recipe.setImageUrl((String) result.get("secure_url"));
         }
 
-        List<Subscription> subscribers = subscriptionRepository.findByFollowed(recipe.getOwner());
+        Recipe saved = recipeRepository.save(recipe);
+
+        List<Subscription> subscribers = subscriptionRepository.findByFollowed(saved.getOwner());
 
         for (Subscription sub : subscribers) {
-            emailService.sendNotification(
+            emailService.sendNewRecipeEmail(
                     sub.getFollower().getEmail(),
-                    "¡Nueva receta de " + recipe.getOwner().getUsername() + "!",
-                    "El chef ha subido: " + recipe.getTitle() + ". ¡Entra a verla!"
+                    saved.getOwner().getUsername(),
+                    saved.getTitle(),
+                    saved.getId()
             );
         }
 

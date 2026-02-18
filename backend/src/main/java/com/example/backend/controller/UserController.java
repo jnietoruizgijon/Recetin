@@ -4,7 +4,10 @@ import com.example.backend.controller.dto.CreateUserRequest;
 import com.example.backend.controller.dto.LoginRequest;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
+import com.example.backend.model.LoginResponse;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.security.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +17,9 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public UserController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -38,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public User login (@RequestBody LoginRequest request) {
+    public LoginResponse login (@RequestBody LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
@@ -48,7 +54,10 @@ public class UserController {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return user;
+        // Generamos el token del usuario partiendo de su email
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        return new LoginResponse(token, user);
     }
 
 
