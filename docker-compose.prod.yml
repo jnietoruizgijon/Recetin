@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: recetin_postgres
+    environment:
+      POSTGRES_DB: recetin_db
+      POSTGRES_USER: recetin_user
+      POSTGRES_PASSWORD: recetin_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: recetin-backend
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/recetin_db
+      SPRING_DATASOURCE_USERNAME: recetin_user
+      SPRING_DATASOURCE_PASSWORD: recetin_pass
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+      args:
+        - REACT_APP_API_URL=${REACT_APP_API_URL}
+    container_name: recetin-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+  maven-repo:
