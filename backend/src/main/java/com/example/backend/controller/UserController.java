@@ -8,8 +8,13 @@ import com.example.backend.model.LoginResponse;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -27,7 +32,16 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody CreateUserRequest request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "El nombre de usuario ya está registrado"));
+        }
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "El correo electrónico ya está registrado"));
+        }
 
         User user = new User();
         user.setUsername(request.getUsername());
@@ -35,7 +49,10 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Collections.singletonMap("message", "Usuario registrado con éxito"));
     }
 
     @GetMapping("/{id}")
