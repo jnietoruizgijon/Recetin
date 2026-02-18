@@ -10,7 +10,8 @@ import RecipeDetail from "./pages/RecipeDetail";
 import Profile from "./pages/Profile";
 import CreateRecipe from "./pages/CreateRecipe";
 import EditRecipe from "./pages/EditeRecipe";
-import UserDetail from "./pages/UserDetai";
+import UserDetail from "./pages/UserDetail";
+import AdminDashboard from "./pages/AdminDashboard";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
@@ -33,6 +34,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<AdminDashboard />} />
 
         <Route path="/" element={
           <ProtectedRoute>

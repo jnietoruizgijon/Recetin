@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,5 +33,4 @@ public class User {
     @Enumerated(EnumType.STRING) // Para que JPA guarde un String en la DB
     @Column(nullable = false)
     private Role role;
-
 }

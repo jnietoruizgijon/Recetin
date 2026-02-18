@@ -10,10 +10,14 @@ import com.example.backend.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -61,18 +65,27 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login (@RequestBody LoginRequest request) {
+    public LoginResponse login(@RequestBody LoginRequest request) {
 
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
 
         boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
-
         if (!matches) {
-            throw new RuntimeException("Invalid credentials");
+            throw new RuntimeException("Credenciales inválidas");
         }
 
-        // Generamos el token del usuario partiendo de su email
-        String token = jwtUtil.generateToken(user.getEmail());
+        List<GrantedAuthority> authorities = List.of(
+                new SimpleGrantedAuthority(user.getRole().toString())
+        );
+
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                authorities
+        );
+
+        String token = jwtUtil.generateToken(userDetails);
 
         return new LoginResponse(token, user);
     }
