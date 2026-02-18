@@ -108,7 +108,6 @@ function RecipeDetail() {
         <main className="container py-5">
             <section className="recipe-detail bg-white shadow-sm rounded-4 overflow-hidden">
 
-                {/* 1. CABECERA (Fuera del área imprimible para ocultar botones) */}
                 <div className="p-4 p-md-5 border-bottom">
                     <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                         <div>
@@ -117,10 +116,22 @@ function RecipeDetail() {
                                 {recipe.preparationTime && (
                                     <span className="badge bg-primary rounded-pill">⏱ {recipe.preparationTime} min</span>
                                 )}
+
+                                {/* --- AQUÍ RECUPERAMOS EL ENLACE AL DUEÑO --- */}
+                                {owner && (
+                                    <>
+                                        <span>•</span>
+                                        <span>
+                                            Por
+                                            <Link className="fw-bold text-decoration-none ms-1" to={`/user/${owner.id}`}>
+                                                {owner.username}
+                                            </Link>
+                                        </span>
+                                    </>
+                                )}
                             </div>
                         </div>
 
-                        {/* Estos botones NO saldrán en el PDF porque están fuera de 'printable-area' */}
                         <div className="d-flex gap-2">
                             {user && (
                                 <button className={`btn ${isFavorite ? 'btn-danger' : 'btn-outline-danger'} rounded-pill px-4`} onClick={toggleFavorite}>
