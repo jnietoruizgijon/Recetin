@@ -41,7 +41,13 @@ function Home() {
 
   const fetchRecipes = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/recipes`);
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/recipes`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
       if (!response.ok) throw new Error('Error al cargar recetas');
       const data = await response.json();
       setRecipes(data);

@@ -29,14 +29,9 @@ function Login() {
         throw new Error("Credenciales incorrectas");
       }
 
-      const user = await response.json();
+      const data = await response.json();
 
-      // --- CAMBIO AQUÍ ---
-      // Guardamos el objeto usuario como un texto en el almacenamiento del navegador
-      localStorage.setItem("user", JSON.stringify(user));
-      // -------------------
-
-      login(user);
+      login(data.user, data.token);
       navigate("/");
 
     } catch (err) {

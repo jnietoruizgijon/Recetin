@@ -6,6 +6,7 @@ import plus from "../img/plus-solid-full.svg"
 
 function Profile() {
     const { user } = useContext(AuthContext);
+    const token = localStorage.getItem("token");
 
     const [myRecipes, setMyRecipes] = useState([]);
     const [favorites, setFavorites] = useState([]);
@@ -24,8 +25,18 @@ function Profile() {
         try {
             setLoading(true);
 
-            const recipesResponse = await fetch(`${process.env.REACT_APP_API_URL}/recipes/user/${user.id}`);
-            const favoritesResponse = await fetch(`${process.env.REACT_APP_API_URL}/favorites/${user.id}`);
+            const recipesResponse = await fetch(`${process.env.REACT_APP_API_URL}/recipes/user/${user.id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+            });
+            const favoritesResponse = await fetch(`${process.env.REACT_APP_API_URL}/favorites/${user.id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+            });
 
             if (!recipesResponse.ok) throw new Error('Error al cargar mis recetas');
             if (!favoritesResponse.ok) throw new Error('Error al cargar favoritos');
@@ -47,7 +58,13 @@ function Profile() {
         try {
             const response = await fetch(
                 `${process.env.REACT_APP_API_URL}/favorites/${user.id}/${recipeId}`,
-                { method: 'DELETE' }
+                {
+                    method: 'DELETE',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                }
             );
 
             if (response.ok) {
@@ -64,7 +81,13 @@ function Profile() {
         try {
             const response = await fetch(
                 `${process.env.REACT_APP_API_URL}/recipes/${recipeId}`,
-                { method: 'DELETE' }
+                {
+                    method: 'DELETE',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                }
             );
 
             if (response.status === 403) {

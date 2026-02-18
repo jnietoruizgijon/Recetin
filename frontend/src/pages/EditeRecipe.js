@@ -6,6 +6,7 @@ import RecipeForm from '../components/RecipeForm';
 function EditRecipe() {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+  const token = localStorage.getItem("token");
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -17,7 +18,12 @@ function EditRecipe() {
 
   const fetchRecipe = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/recipes/${id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/recipes/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
       if (!response.ok) throw new Error('Receta no encontrada');
       const data = await response.json();
       setRecipe(data);
@@ -42,7 +48,7 @@ function EditRecipe() {
     return <div>No tienes permiso para editar esta receta</div>;
   }
 
-  return <RecipeForm recipeId={id} initialData={recipe} onSuccess={handleSuccess} onCancel={() => navigate(`/recipes/${id}`)}/>;
+  return <RecipeForm recipeId={id} initialData={recipe} onSuccess={handleSuccess} onCancel={() => navigate(`/recipes/${id}`)} />;
 }
 
 export default EditRecipe;

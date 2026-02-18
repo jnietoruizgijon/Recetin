@@ -63,6 +63,7 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
 
     try {
       const user = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem("token");
       if (!user) throw new Error('Debes iniciar sesión');
 
       const recipeDTO = {
@@ -95,6 +96,10 @@ function RecipeForm({ recipeId, initialData, onSuccess, onCancel }) {
       const response = await fetch(url, {
         method: method,
         body: dataToSend,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
       });
 
       if (!response.ok) {

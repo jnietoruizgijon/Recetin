@@ -6,13 +6,19 @@ function UserDetail() {
     const [chef, setChef] = useState(null); // El dueño del perfil
     const [recipes, setRecipes] = useState([]);
     const [isSubscribed, setIsSubscribed] = useState(false);
+    const token = localStorage.getItem("token");
 
     // Recuperamos al usuario logueado (TÚ) desde el localStorage
     const me = JSON.parse(localStorage.getItem("user"));
 
     // 1. Cargar datos del Chef
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/users/${id}`)
+        fetch(`${process.env.REACT_APP_API_URL}/users/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+        })
             .then(res => res.json())
             .then(data => setChef(data));
     }, [id]);
@@ -23,7 +29,12 @@ function UserDetail() {
             // Solo comprobamos si yo estoy logueado y el chef ha cargado
             if (!me || !chef) return;
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/subscriptions/check?followerId=${me.id}&followedId=${chef.id}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/subscriptions/check?followerId=${me.id}&followedId=${chef.id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                });
                 const data = await response.json();
                 setIsSubscribed(data.exists);
             } catch (error) {
@@ -36,7 +47,12 @@ function UserDetail() {
     // 3. Cargar recetas del Chef
     useEffect(() => {
         if (!chef) return;
-        fetch(`${process.env.REACT_APP_API_URL}/recipes/user/${id}`)
+        fetch(`${process.env.REACT_APP_API_URL}/recipes/user/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+        })
             .then(res => res.json())
             .then(data => setRecipes(data));
     }, [chef, id]);
@@ -53,7 +69,10 @@ function UserDetail() {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/subscriptions${endpoint}`, {
                 method: method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     followerId: me.id, // Tu ID (el que sigue)
                     followedId: chef.id // El ID del chef (al que siguen)
