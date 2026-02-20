@@ -106,7 +106,7 @@ function Home() {
 
       {/* 2. GRID DE RECETAS */}
       <div className="row g-4">
-        {/* Card especial para añadir receta (Botón creativo) */}
+        {/* Card especial para añadir receta */}
         {user && (
           <div className="col-12 col-sm-6 col-md-4 col-lg-3">
             <Link

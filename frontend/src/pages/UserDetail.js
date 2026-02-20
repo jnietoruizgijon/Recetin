@@ -8,7 +8,6 @@ function UserDetail() {
     const [isSubscribed, setIsSubscribed] = useState(false);
     const token = localStorage.getItem("token");
 
-    // Recuperamos al usuario logueado (TÚ) desde el localStorage
     const me = JSON.parse(localStorage.getItem("user"));
 
     // 1. Cargar datos del Chef
@@ -74,8 +73,8 @@ function UserDetail() {
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    followerId: me.id, // Tu ID (el que sigue)
-                    followedId: chef.id // El ID del chef (al que siguen)
+                    followerId: me.id, // el que sigue
+                    followedId: chef.id // al que siguen
                 })
             });
 
@@ -122,7 +121,7 @@ function UserDetail() {
                 </div>
             </div>
 
-            {/* Grid de recetas igual que lo tenías... */}
+            {/* Grid de recetas */}
             <div className="row g-4">
                 {recipes.map(recipe => (
                     <div className="col-12 col-md-6 col-lg-4" key={recipe.id}>

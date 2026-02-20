@@ -206,7 +206,7 @@ function RecipeDetail() {
                     </div>
                 </div>
 
-                {/* 3. BOTÓN DE DESCARGA (Abajo del todo) */}
+                {/* 3. BOTÓN DE DESCARGA */}
                 <div className="p-4 border-top text-center bg-light">
                     <button onClick={downloadPDF} className="btn btn-dark btn-lg rounded-pill px-5 shadow">
                         📥 Descargar receta en PDF

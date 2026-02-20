@@ -124,7 +124,7 @@ function Profile() {
 
     return (
         <main className="container py-5">
-            {/* CABECERA DE PERFIL (Estilo similar al que hicimos antes) */}
+            {/* CABECERA DE PERFIL */}
             <div className="text-center mb-5">
                 <div className="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow"
                     style={{ width: '80px', height: '80px', fontSize: '2rem' }}>
