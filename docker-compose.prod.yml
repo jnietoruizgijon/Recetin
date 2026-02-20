@@ -14,7 +14,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     container_name: recetin-backend
     env_file:
       - .env
@@ -33,7 +33,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       args:
         - REACT_APP_API_URL=${REACT_APP_API_URL}
     container_name: recetin-frontend
