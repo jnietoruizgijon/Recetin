@@ -12,7 +12,7 @@ import CreateRecipe from "./pages/CreateRecipe";
 import EditRecipe from "./pages/EditeRecipe";
 import UserDetail from "./pages/UserDetail";
 import AdminDashboard from "./pages/AdminDashboard";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/custom.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const ProtectedRoute = ({ children }) => {

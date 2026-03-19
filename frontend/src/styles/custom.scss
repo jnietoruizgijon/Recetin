@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('./fonts/Roboto-VariableFont_wdth,wght.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+// INTERRUPTORES GLOBALES
+$enable-shadows: true;
+$enable-gradients: true;
+$enable-transitions: true;
+$enable-rounded: true;
+
+// TRANSICIONES GLOBALES
+$transition-base: all .35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+// SOMBRAS PERSONALIZADAS
+$box-shadow:       0 10px 30px rgba(0, 0, 0, 0.08);
+$box-shadow-sm:    0 4px 12px rgba(0, 0, 0, 0.05);
+$box-shadow-lg:    0 20px 40px rgba(0, 0, 0, 0.12);
+
+// NÚCLEO DE LAS CARDS
+$card-border-width:  0;
+$card-border-radius: 1.25rem;
+$card-box-shadow:    $box-shadow;
+$card-cap-bg:        transparent;
+$card-spacer-y:      1.5rem;
+$card-spacer-x:      1.5rem;
+
+// BOTONES Y FORMULARIOS
+$btn-border-radius:           50rem;
+$btn-box-shadow:              0 4px 10px rgba(0, 0, 0, 0.1);
+$input-border-radius:         0.75rem;
+$input-btn-focus-box-shadow:  0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+
+// COLORES BASE
+$primary:   #ff6b6b;
+$secondary: #4ecdc4;
+$dark:      #292f36;
+$light:     #f8f9fa;
+
+// TIPOGRAFÍA GLOBAL
+$font-family-sans-serif: 'Roboto', sans-serif;
+$headings-font-weight:   800;
+
+// ESPACIADO GLOBAL
+$spacer: 1.2rem;
+
+// TIPOGRAFÍA BASE
+$font-size-base: 1.05rem;
+$line-height-base: 1.6;
+
+// ENLACES GLOBALES
+$link-color:            $primary;
+$link-decoration:       none;
+$link-hover-color:      darken(#ff6b6b, 15%);
+$link-hover-decoration: none;
+
+// ALERTAS
+$alert-border-radius:   1.25rem;
+$alert-border-width:    0;
+$alert-padding-y:       1.5rem;
+$alert-padding-x:       1.5rem;
+
+// INSIGNIAS
+$badge-font-size:       0.85em;
+$badge-font-weight:     600;
+$badge-padding-y:       0.45em;
+$badge-padding-x:       0.85em;
+$badge-border-radius:   2rem;
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
