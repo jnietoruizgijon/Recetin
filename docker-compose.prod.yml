@@ -40,7 +40,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "3000:3000"
+      - "3000:80"
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
